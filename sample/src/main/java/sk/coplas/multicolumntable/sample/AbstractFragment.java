@@ -1,7 +1,7 @@
 package sk.coplas.multicolumntable.sample;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +14,21 @@ import sk.coplas.multicolumntable.MultiColumnTableView;
 /**
  * Sample for MultiColumnTableView
  */
-public class MainActivityFragment extends Fragment {
+public abstract class AbstractFragment extends Fragment {
 
     private MultiColumnTableView table;
 
-    public MainActivityFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_main, container, false);
+        ViewGroup view = getView(inflater, container);
         table = (MultiColumnTableView) view.findViewById(R.id.table);
         initData();
         return view;
     }
+
+    protected abstract ViewGroup getView(LayoutInflater inflater, ViewGroup container);
 
     private void initData() {
         String[] titles = {"State", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MH", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"};
@@ -93,7 +93,7 @@ public class MainActivityFragment extends Fragment {
         for (int i = 0; i < states.length; i++) {
             data[i][0] = states[i];
             for (int j = 1; j < titles.length; j++) {
-                data[i][j] = String.format(Locale.getDefault(), "%d - %d", i, j);
+                data[i][j] = String.format(Locale.getDefault(), "%d - %d", i, j-1);
             }
         }
 
