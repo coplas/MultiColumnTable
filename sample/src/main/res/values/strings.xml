@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MultiColumnTable</string>
+    <string name="title_activity_main">Multi Column Table Sample</string>
 </resources>

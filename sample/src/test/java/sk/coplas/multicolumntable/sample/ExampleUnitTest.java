@@ -1,4 +1,4 @@
-package sk.coplas.multicolumntable;
+package sk.coplas.multicolumntable.sample;
 
 import org.junit.Test;
 
