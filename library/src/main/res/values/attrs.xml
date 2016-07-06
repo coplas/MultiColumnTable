@@ -1,0 +1,11 @@
+<resources>
+    <declare-styleable name="MultiColumnTableView">
+        <attr name="cellView" format="reference" />
+        <attr name="headerTextAppearance" format="reference" />
+        <attr name="fixedCount" format="integer"/>
+        <attr name="fixedTextAppearance" format="reference" />
+        <attr name="cellTextAppearance" format="reference" />
+        <attr name="strippedRows" format="boolean" />
+        <attr name="stripColor" format="color" />
+    </declare-styleable>
+</resources>

@@ -14,7 +14,7 @@ public class CustomStyledFragment extends AbstractFragment {
 
     @Override
     protected ViewGroup getView(LayoutInflater inflater, ViewGroup container) {
-        return (ViewGroup) inflater.inflate(R.layout.fragment_simple, container, false);
+        return (ViewGroup) inflater.inflate(R.layout.fragment_custom, container, false);
     }
 
 }

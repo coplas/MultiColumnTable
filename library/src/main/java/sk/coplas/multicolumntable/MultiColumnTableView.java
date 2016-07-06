@@ -2,21 +2,13 @@ package sk.coplas.multicolumntable;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.text.TextPaint;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Multicolumn table view
@@ -29,9 +21,17 @@ public class MultiColumnTableView extends FrameLayout {
 
     private TableLayout fixed;
     private TableLayout floating;
-    private int fixedCount = 1;
 
     private LayoutInflater inflater;
+
+    private int fixedCount = 1;
+    private int item;
+
+    private int headerTextAppearance;
+    private int fixedTextAppearance;
+    private int cellTextAppearance;
+    private boolean strippedRows;
+    private int stripColor;
 
     public MultiColumnTableView(Context context) {
         super(context);
@@ -49,11 +49,25 @@ public class MultiColumnTableView extends FrameLayout {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MultiColumnTableView, 0, 0);
+
+        fixedCount = a.getInt(R.styleable.MultiColumnTableView_fixedCount, 1);
+        item = a.getResourceId(R.styleable.MultiColumnTableView_cellView, R.layout.item);
+        cellTextAppearance = a.getResourceId(R.styleable.MultiColumnTableView_cellTextAppearance, -1);
+        fixedTextAppearance = a.getResourceId(R.styleable.MultiColumnTableView_fixedTextAppearance, -1);
+        headerTextAppearance = a.getResourceId(R.styleable.MultiColumnTableView_headerTextAppearance, -1);
+        strippedRows = a.getBoolean(R.styleable.MultiColumnTableView_strippedRows, false);
+        stripColor = a.getColor(R.styleable.MultiColumnTableView_stripColor, getResources().getColor(R.color.colorStrip));
+
+        a.recycle();
+
+
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.container, this, true);
 
         fixed = (TableLayout)findViewById(R.id.fixed);
         floating = (TableLayout)findViewById(R.id.floating);
+
 
         redraw();
     }
@@ -66,64 +80,99 @@ public class MultiColumnTableView extends FrameLayout {
     }
 
     private void redrawFixed() {
+        int index = 0;
         fixed.removeAllViews();
-        TableRow row;
         TextView item;
-        row = (TableRow) inflater.inflate(R.layout.row, fixed, false);
+        TableRow row;
+        row = getTableRow(fixed, index);
         for (int i = 0; i < fixedCount; i++) {
-            item = (TextView) inflater.inflate(R.layout.item, row, false);
+            item = getCellTextView(row, true, true);
             if (i < titles.length) {
                 item.setText(titles[i]);
             }
             row.addView(item);
         }
         fixed.addView(row);
+        index++;
         for (String[] value : values) {
-            row = (TableRow) inflater.inflate(R.layout.row, fixed, false);
+            row = getTableRow(fixed, index);
             for (int i = 0; i < fixedCount; i++) {
-                item = (TextView) inflater.inflate(R.layout.item, row, false);
+                item = getCellTextView(row, false, true);
                 if (i < value.length) {
                     item.setText(value[i]);
                 }
                 row.addView(item);
             }
             fixed.addView(row);
+            index++;
         }
     }
 
+    private TableRow getTableRow(TableLayout tableLayout, int index) {
+        TableRow row;
+        row = (TableRow) inflater.inflate(R.layout.row, tableLayout, false);
+        if (strippedRows && (index % 2 == 0)) {
+            row.setBackgroundColor(stripColor);
+        }
+        return row;
+    }
+
     private void redrawFloating() {
+        int index = 0;
         floating.removeAllViews();
         TableRow row;
         TextView item;
-        row = (TableRow) inflater.inflate(R.layout.row, floating, false);
+        row = getTableRow(floating, index);
         for (int i = fixedCount; i < titles.length; i++) {
-            item = (TextView) inflater.inflate(R.layout.item, row, false);
+            item = getCellTextView(row, true, false);
             item.setText(titles[i]);
             row.addView(item);
         }
         floating.addView(row);
+        index++;
         for (String[] value : values) {
-            row = (TableRow) inflater.inflate(R.layout.row, floating, false);
+            row = getTableRow(floating, index);
             for (int i = fixedCount; i < titles.length; i++) {
-                item = (TextView) inflater.inflate(R.layout.item, row, false);
+                item = getCellTextView(row, false, false);
                 if (i < value.length) {
                     item.setText(value[i]);
                 }
                 row.addView(item);
             }
             floating.addView(row);
+            index++;
+        }
+    }
+
+    private TextView getCellTextView(TableRow row, boolean isHeader, boolean isFixed) {
+        TextView item = (TextView) inflater.inflate(this.item, row, false);
+        if (isHeader) {
+            setTextAppearance(item, headerTextAppearance);
+        } else if (isFixed) {
+            setTextAppearance(item, fixedTextAppearance);
+        } else {
+            setTextAppearance(item, cellTextAppearance);
+        }
+        return item;
+    }
+
+    private void setTextAppearance(TextView item, int textAppearance) {
+        if ( textAppearance > -1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                item.setTextAppearance(textAppearance);
+            } else {
+                item.setTextAppearance(getContext(), textAppearance);
+            }
         }
     }
 
     public void setTitles(String[] titles) {
         this.titles = titles;
-        Log.d("mctv", titles.toString());
         redraw();
     }
 
     public void setValues(String[][] values) {
         this.values = values;
-        Log.d("mctv", values.toString());
         redraw();
     }
 

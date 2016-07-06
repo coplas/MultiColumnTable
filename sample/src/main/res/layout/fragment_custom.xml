@@ -3,10 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SimpleFragment"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <sk.coplas.multicolumntable.MultiColumnTableView
         android:id="@+id/table"
+        app:cellView="@layout/custom_item"
+        app:strippedRows="true"
+        app:stripColor="@color/colorStripCustom"
+        app:cellTextAppearance="@style/TextAppearance.MultiColumnTableView.Cell"
+        app:headerTextAppearance="@style/TextAppearance.MultiColumnTableView.Header"
+        app:fixedTextAppearance="@style/TextAppearance.MultiColumnTableView.Fixed"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
