@@ -1,41 +1,27 @@
 package sk.coplas.multicolumntable.sample;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.Locale;
-
-import sk.coplas.multicolumntable.MultiColumnTableView;
 
 
 /**
  * Sample for MultiColumnTableView
  */
-public abstract class AbstractFragment extends Fragment {
+public class CustomStyledSmallFragment extends AbstractFragment {
 
-    private MultiColumnTableView table;
-
-    protected String[] titles;
-    protected String[][] data;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ViewGroup view = getView(inflater, container);
-        table = (MultiColumnTableView) view.findViewById(R.id.table);
-        initData();
-        setupTable(titles, data);
-
-        return view;
+    public CustomStyledSmallFragment() {
     }
 
-    protected abstract ViewGroup getView(LayoutInflater inflater, ViewGroup container);
+    @Override
+    protected ViewGroup getView(LayoutInflater inflater, ViewGroup container) {
+        return (ViewGroup) inflater.inflate(R.layout.fragment_custom, container, false);
+    }
 
+    @Override
     protected void initData() {
-        String[] titles = {"State", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MH", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"};
+        String[] titles = {"State", "AK"};
         String[] states = {"Alabama",
                 "Alaska",
                 "Arizona",
@@ -103,12 +89,5 @@ public abstract class AbstractFragment extends Fragment {
 
         this.titles = titles;
         this.data = data;
-
-
-    }
-
-    private void setupTable(String[] titles, String[][] data) {
-        table.setTitles(titles);
-        table.setValues(data);
     }
 }
