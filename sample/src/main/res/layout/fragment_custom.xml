@@ -13,6 +13,7 @@
         app:cellTextAppearance="@style/TextAppearance.MultiColumnTableView.Cell"
         app:headerTextAppearance="@style/TextAppearance.MultiColumnTableView.Header"
         app:fixedTextAppearance="@style/TextAppearance.MultiColumnTableView.Fixed"
+        app:fixedCount="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
