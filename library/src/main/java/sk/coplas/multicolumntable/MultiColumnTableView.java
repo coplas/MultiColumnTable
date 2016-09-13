@@ -109,8 +109,7 @@ public class MultiColumnTableView extends FrameLayout {
     }
 
     private TableRow getTableRow(TableLayout tableLayout, int index) {
-        TableRow row;
-        row = (TableRow) inflater.inflate(R.layout.row, tableLayout, false);
+        TableRow row = (TableRow) inflater.inflate(R.layout.row, tableLayout, false);
         if (strippedRows && (index % 2 == 0)) {
             row.setBackgroundColor(stripColor);
         }
