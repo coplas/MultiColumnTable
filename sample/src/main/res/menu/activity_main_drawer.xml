@@ -14,6 +14,9 @@
         <item
             android:id="@+id/nav_custom_small"
             android:title="Custom styled small" />
+        <item
+            android:id="@+id/nav_aligns"
+            android:title="Cell aligns" />
     </group>
 
 

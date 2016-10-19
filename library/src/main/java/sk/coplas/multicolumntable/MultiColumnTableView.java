@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TableLayout;
@@ -18,6 +19,7 @@ public class MultiColumnTableView extends FrameLayout {
 
     private String[] titles;
     private String[][] values;
+    private int[] aligns = null;
 
     private TableLayout fixed;
     private TableLayout floating;
@@ -100,6 +102,7 @@ public class MultiColumnTableView extends FrameLayout {
                 item = getCellTextView(row, false, true);
                 if (i < value.length) {
                     item.setText(value[i]);
+                    item.setGravity(getGravity(aligns, i));
                 }
                 row.addView(item);
             }
@@ -135,12 +138,20 @@ public class MultiColumnTableView extends FrameLayout {
                 item = getCellTextView(row, false, false);
                 if (i < value.length) {
                     item.setText(value[i]);
+                    item.setGravity(getGravity(aligns, i));
                 }
                 row.addView(item);
             }
             floating.addView(row);
             index++;
         }
+    }
+
+    private int getGravity(int[] aligns, int i) {
+        if (aligns != null && aligns.length > i) {
+            return aligns[i]|Gravity.CENTER_VERTICAL;
+        }
+        return Gravity.START|Gravity.CENTER_VERTICAL;
     }
 
     private TextView getCellTextView(TableRow row, boolean isHeader, boolean isFixed) {
@@ -177,6 +188,11 @@ public class MultiColumnTableView extends FrameLayout {
 
     public void setFixedCount(int fixedCount) {
         this.fixedCount = fixedCount;
+        redraw();
+    }
+
+    public void setAligns(int[] aligns) {
+        this.aligns = aligns;
         redraw();
     }
 }

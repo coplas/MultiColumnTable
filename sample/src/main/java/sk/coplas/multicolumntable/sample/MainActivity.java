@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new CustomStyledFragment()).commit();
         } else if (id == R.id.nav_custom_small) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, new CustomStyledSmallFragment()).commit();
+        } else if (id == R.id.nav_aligns) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, new AlignsFragment()).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
